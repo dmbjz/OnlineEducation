@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dmbjz.eduservice.mapper.EduCourseMapper">
+
+
+    <select id="getublishCourseInfo" resultType="com.dmbjz.eduservice.entity.vo.CoursePublishVo">
+        SELECT
+            co.id,
+            co.cover,
+            co.title,
+            co.price,
+            co.lesson_num as lessonNum,
+            des.description,
+            tc.name as teacherName,
+            sb1.title as subjectLevelOne,
+            sb2.title as subjectLevelTwo
+        FROM
+            edu_course co
+            LEFT JOIN edu_course_description des ON co.id = des.id
+            LEFT JOIN edu_teacher tc ON co.teacher_id = tc.id
+            LEFT JOIN edu_subject sb1 ON co.subject_parent_id = sb1.id
+            LEFT JOIN edu_subject sb2 ON co.subject_id = sb2.id
+        where co.id = #{courseId}
+    </select>
+
+
+    <!--前台课程详情查询-->
+    <select id="getBaseCourseInfo" resultType="com.dmbjz.eduservice.entity.front.CourseWebVo">
+      SELECT
+        co.id,
+        co.cover,
+        co.title,
+        co.price,
+        co.buy_count AS buyCount,
+        co.view_count AS viewCount,
+        co.lesson_num AS lessonNum,
+        des.description,
+        tc. NAME AS teacherName,
+        tc.intro AS intro,
+        tc.id AS teacherId,
+        tc.avatar AS avatar,
+        sb1.title AS subjectLevelOne,
+        sb2.title AS subjectLevelTwo,
+        sb1.id AS subjectLevelOneId,
+        sb2.id AS subjectLevelTwoId
+      FROM
+        edu_course co
+        LEFT JOIN edu_course_description des ON co.id = des.id
+        LEFT JOIN edu_teacher tc ON co.teacher_id = tc.id
+        LEFT JOIN edu_subject sb1 ON co.subject_parent_id = sb1.id
+        LEFT JOIN edu_subject sb2 ON co.subject_id = sb2.id
+      where co.id = #{courseid}
+    </select>
+
+</mapper>
